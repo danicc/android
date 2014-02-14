@@ -1,0 +1,96 @@
+package com.example.hellogps;
+
+import com.google.android.maps.MapActivity;
+
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Bundle;
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.util.Log;
+import android.view.Menu;
+import android.widget.TextView;
+
+public class MainActivity extends MapActivity {
+
+	private TextView tvLocation;
+	private ProgressDialog pd;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		
+		tvLocation = (TextView) this.findViewById(R.id.tvlocation2);
+		
+		pd = ProgressDialog.show(this, "Location", "Waiting for Gps location");
+		configGps();
+	}
+	
+	private void updateScreen(Location location) {
+		
+		tvLocation.setText("Latitude = " + String.valueOf(location.getLatitude())+ "     " +
+		                   "Longitude = " + String.valueOf(location.getLongitude()));
+		
+		pd.dismiss();
+		
+	}
+
+	
+	private void configGps(){
+		LocationManager mLocationManager;
+		LocationListener mLocationListener;
+		
+		mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		mLocationListener = new MyLocationListener();
+		mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, mLocationListener);
+		
+	}
+	
+	private class MyLocationListener implements LocationListener{
+
+		@Override
+		public void onLocationChanged(Location location) {
+			// TODO Auto-generated method stub
+			Log.d("HelloGpsActivity", "Latitude = "+ String.valueOf(location.getLatitude()));
+			Log.d("HelloGpsActivity", "Longitude = "+ String.valueOf(location.getLongitude()));
+			
+			updateScreen(location);
+			
+		}
+
+		@Override
+		public void onProviderDisabled(String arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onProviderEnabled(String arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
+			// TODO Auto-generated method stub
+			
+		}
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
+	}
+
+	@Override
+	protected boolean isRouteDisplayed() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+}

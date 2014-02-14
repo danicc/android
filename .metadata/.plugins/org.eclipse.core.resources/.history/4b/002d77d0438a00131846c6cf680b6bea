@@ -1,0 +1,56 @@
+package com.example.actividades;
+
+import android.os.Bundle;
+import android.app.Activity;
+import android.content.Intent;
+import android.view.Menu;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+
+public class ActividadCero extends Activity {
+
+	private final static String DESCRIPCION_KEY = "descripciòn";
+	private static String apretado = "se ha apretado el boton";
+	private static EditText editText;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_actividad_cero);
+		
+		TextView texto = (TextView) findViewById(R.id.textView1);
+		editText = (EditText) findViewById(R.id.editText1);
+		Button boton = (Button) findViewById(R.id.button1);
+		boton.setOnClickListener(
+				new OnClickListener() {
+					@Override
+					public void onClick(View arg0) {
+					  // TODO Auto-generated method stub
+					  Intent i = new Intent(ActividadCero.this,ActividadUno.class);
+					  startActivity(i);
+					}
+				});
+		if (savedInstanceState != null){
+			editText.getText(DESCRIPCION_KEY);
+		}
+	
+	
+	}
+
+	
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.actividad_cero, menu);
+		return true;
+	}
+	
+	public void OnSaveInstanceState(Bundle savedInstanceState) {
+		savedInstanceState.putString(DESCRIPCION_KEY,editText.toString());
+	}
+
+}
